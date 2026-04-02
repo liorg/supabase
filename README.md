@@ -11,8 +11,12 @@
 - **React UI פונה רק ל-FastAPI**
 - **FastAPI קורא את ה-DB כדי להחזיר סטטוס**
 
-אין צורך ב-queue או events bus.
-## Phone Provisioning Flow
+אין צורך ב-queue או events bus
+
+
+
+.
+#System 
 
 
 ```mermaid
@@ -49,6 +53,34 @@ AGENT --> PHONE1
 AGENT --> PHONE2
 AGENT --> PHONEN
 ```
+## Phone Provisioning Flow
+
+
+```mermaid
+sequenceDiagram
+
+participant UI
+participant API
+participant DB
+participant Agent
+participant Phone
+
+UI->>API: Create phone setup
+API->>DB: Insert phone + provisioning event
+
+Agent->>DB: Poll for new provisioning events
+DB-->>Agent: Return setup task
+
+Agent->>Phone: Create container
+Agent->>DB: Update phone status
+Agent->>DB: Insert agent event
+
+UI->>API: Poll setup status
+API->>DB: Read phone status
+DB-->>API: Return status
+API-->>UI: Updated status
+```
+
 # High Level Architecture
 
 ## Database ERD
