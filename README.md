@@ -14,36 +14,41 @@
 אין צורך ב-queue או events bus.
 ## Phone Provisioning Flow
 
+
 ```mermaid
-sequenceDiagram
+flowchart TB
 
-participant UI
-participant API
-participant DB
-participant Redis
-participant Worker
-participant Agent
-participant Phone
+subgraph Presentation
+UI["React / Vite UI"]
+end
 
-UI->>API: Create phone setup
-API->>DB: Insert phone
-API->>DB: Insert provisioning event
-API->>Redis: Push setup event
+subgraph Backend
+API["FastAPI Orchestrator"]
+end
 
-Worker->>Redis: Consume event
-Worker->>Agent: Request container start
+subgraph Data
+DB[("PostgreSQL")]
+end
 
-Agent->>Phone: Create container
-Agent->>DB: Update phone status
-Agent->>DB: Insert provisioning/agent events
+subgraph Infrastructure
+AGENT[".NET Agent"]
 
-UI->>API: Poll setup status
-API->>DB: Read current status
-DB-->>API: Return latest phone/provisioning status
-API-->>UI: Return updated status
+subgraph HOST["Linux Host"]
+PHONE1["Phone Container"]
+PHONE2["Phone Container"]
+PHONEN["Phone Container"]
+end
+
+end
+
+UI --> API
+API --> DB
+
+AGENT --> DB
+AGENT --> PHONE1
+AGENT --> PHONE2
+AGENT --> PHONEN
 ```
----
-
 # High Level Architecture
 
 ## Database ERD
