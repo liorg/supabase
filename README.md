@@ -1,106 +1,150 @@
+erDiagram
 
-<img width="6462" height="8192" alt="17751570977227796678731050878434" src="https://github.com/user-attachments/assets/ed9b5575-ecc4-463f-a3bc-d3bdc2d971ba" />
+    USERS {
+        uuid id PK
+        uuid instance_id
+    }
 
+    AGENT_HOSTS {
+        uuid id PK
+        varchar host_name
+        varchar ip_address
+        varchar external_ip
+        varchar status
+        timestamptz last_heartbeat
+        int max_containers
+        int port_range_start
+        int port_range_end
+        timestamptz created_at
+        timestamptz updated_at
+    }
 
-| table_name                | column_name       | data_type                   |
-| ------------------------- | ----------------- | --------------------------- |
-| agent_events              | id                | uuid                        |
-| agent_events              | agent_host_id     | uuid                        |
-| agent_events              | event_type        | character varying           |
-| agent_events              | event_data        | jsonb                       |
-| agent_events              | created_at        | timestamp with time zone    |
-| agent_hosts               | id                | uuid                        |
-| agent_hosts               | host_name         | character varying           |
-| agent_hosts               | ip_address        | character varying           |
-| agent_hosts               | external_ip       | character varying           |
-| agent_hosts               | status            | character varying           |
-| agent_hosts               | last_heartbeat    | timestamp with time zone    |
-| agent_hosts               | max_containers    | integer                     |
-| agent_hosts               | port_range_start  | integer                     |
-| agent_hosts               | port_range_end    | integer                     |
-| agent_hosts               | created_at        | timestamp with time zone    |
-| agent_hosts               | updated_at        | timestamp with time zone    |
-| calls                     | id                | uuid                        |
-| calls                     | phone_id          | uuid                        |
-| calls                     | contact_id        | uuid                        |
-| calls                     | scenario_id       | uuid                        |
-| calls                     | status            | text                        |
-| calls                     | started_at        | timestamp without time zone |
-| calls                     | ended_at          | timestamp without time zone |
-| calls                     | created_at        | timestamp without time zone |
-| contacts                  | id                | uuid                        |
-| contacts                  | phone_id          | uuid                        |
-| contacts                  | lid               | text                        |
-| contacts                  | number            | text                        |
-| contacts                  | name              | text                        |
-| contacts                  | email             | text                        |
-| contacts                  | avatar            | text                        |
-| contacts                  | tag               | text                        |
-| contacts                  | is_bot            | boolean                     |
-| contacts                  | created_at        | timestamp without time zone |
-| messages                  | id                | uuid                        |
-| messages                  | call_id           | uuid                        |
-| messages                  | topic             | text                        |
-| messages                  | sender            | text                        |
-| messages                  | extension         | text                        |
-| messages                  | content           | jsonb                       |
-| messages                  | status            | text                        |
-| messages                  | payload           | jsonb                       |
-| messages                  | sent_at           | timestamp without time zone |
-| messages                  | event             | text                        |
-| messages                  | private           | boolean                     |
-| messages                  | updated_at        | timestamp without time zone |
-| messages                  | inserted_at       | timestamp without time zone |
-| messages                  | id                | uuid                        |
-| phone_provisioning_events | id                | uuid                        |
-| phone_provisioning_events | phone_id          | uuid                        |
-| phone_provisioning_events | agent_host_id     | uuid                        |
-| phone_provisioning_events | status            | character varying           |
-| phone_provisioning_events | event_data        | jsonb                       |
-| phone_provisioning_events | created_at        | timestamp with time zone    |
-| phones                    | id                | uuid                        |
-| phones                    | user_id           | uuid                        |
-| phones                    | number            | text                        |
-| phones                    | label             | text                        |
-| phones                    | color             | text                        |
-| phones                    | status            | text                        |
-| phones                    | docker_url        | text                        |
-| phones                    | docker_status     | text                        |
-| phones                    | created_at        | timestamp without time zone |
-| phones                    | host_id           | uuid                        |
-| phones                    | container_id      | character varying           |
-| phones                    | container_name    | character varying           |
-| phones                    | api_port          | integer                     |
-| phones                    | ws_port           | integer                     |
-| phones                    | last_health_check | timestamp with time zone    |
-| phones                    | error_message     | text                        |
-| scenario_runs             | id                | uuid                        |
-| scenario_runs             | scenario_id       | uuid                        |
-| scenario_runs             | phone_id          | uuid                        |
-| scenario_runs             | status            | text                        |
-| scenario_runs             | started_at        | timestamp without time zone |
-| scenario_runs             | ended_at          | timestamp without time zone |
-| scenario_runs             | created_at        | timestamp without time zone |
-| scenarios                 | id                | uuid                        |
-| scenarios                 | phone_id          | uuid                        |
-| scenarios                 | contact_id        | uuid                        |
-| scenarios                 | name              | text                        |
-| scenarios                 | status            | text                        |
-| scenarios                 | config            | jsonb                       |
-| scenarios                 | created_at        | timestamp without time zone |
-| schedules                 | id                | uuid                        |
-| schedules                 | phone_id          | uuid                        |
-| schedules                 | contact_id        | uuid                        |
-| schedules                 | scenario_id       | uuid                        |
-| schedules                 | schedule_name     | text                        |
-| schedules                 | schedule_type     | text                        |
-| schedules                 | status            | text                        |
-| schedules                 | run_at            | timestamp without time zone |
-| schedules                 | cron_expr         | text                        |
-| schedules                 | interval_min      | integer                     |
-| schedules                 | last_run          | timestamp without time zone |
-| schedules                 | next_run          | timestamp without time zone |
-| schedules                 | created_at        | timestamp without time zone |
-| users                     | instance_id       | uuid                        |
-| users                     | id                | uuid                        |
-| users                     | id                | uuid                        |
+    AGENT_EVENTS {
+        uuid id PK
+        uuid agent_host_id FK
+        varchar event_type
+        jsonb event_data
+        timestamptz created_at
+    }
+
+    PHONES {
+        uuid id PK
+        uuid user_id FK
+        text number
+        text label
+        text color
+        text status
+        text docker_url
+        text docker_status
+        timestamp created_at
+        uuid host_id FK
+        varchar container_id
+        varchar container_name
+        int api_port
+        int ws_port
+        timestamptz last_health_check
+        text error_message
+    }
+
+    PHONE_PROVISIONING_EVENTS {
+        uuid id PK
+        uuid phone_id FK
+        uuid agent_host_id FK
+        varchar status
+        jsonb event_data
+        timestamptz created_at
+    }
+
+    CONTACTS {
+        uuid id PK
+        uuid phone_id FK
+        text lid
+        text number
+        text name
+        text email
+        text avatar
+        text tag
+        boolean is_bot
+        timestamp created_at
+    }
+
+    SCENARIOS {
+        uuid id PK
+        uuid phone_id FK
+        uuid contact_id FK
+        text name
+        text status
+        jsonb config
+        timestamp created_at
+    }
+
+    SCENARIO_RUNS {
+        uuid id PK
+        uuid scenario_id FK
+        uuid phone_id FK
+        text status
+        timestamp started_at
+        timestamp ended_at
+        timestamp created_at
+    }
+
+    SCHEDULES {
+        uuid id PK
+        uuid phone_id FK
+        uuid contact_id FK
+        uuid scenario_id FK
+        text schedule_name
+        text schedule_type
+        text status
+        timestamp run_at
+        text cron_expr
+        int interval_min
+        timestamp last_run
+        timestamp next_run
+        timestamp created_at
+    }
+
+    CALLS {
+        uuid id PK
+        uuid phone_id FK
+        uuid contact_id FK
+        uuid scenario_id FK
+        text status
+        timestamp started_at
+        timestamp ended_at
+        timestamp created_at
+    }
+
+    MESSAGES {
+        uuid id PK
+        uuid call_id FK
+        text topic
+        text sender
+        text extension
+        jsonb content
+        text status
+        jsonb payload
+        timestamp sent_at
+        text event
+        boolean private
+        timestamp updated_at
+        timestamp inserted_at
+    }
+
+    USERS ||--o{ PHONES : owns
+    AGENT_HOSTS ||--o{ PHONES : hosts
+    AGENT_HOSTS ||--o{ AGENT_EVENTS : emits
+    AGENT_HOSTS ||--o{ PHONE_PROVISIONING_EVENTS : handles
+    PHONES ||--o{ PHONE_PROVISIONING_EVENTS : provisioning
+    PHONES ||--o{ CONTACTS : has
+    PHONES ||--o{ SCENARIOS : contains
+    CONTACTS ||--o{ SCENARIOS : target
+    SCENARIOS ||--o{ SCENARIO_RUNS : runs
+    PHONES ||--o{ SCENARIO_RUNS : runs_on
+    PHONES ||--o{ SCHEDULES : schedules
+    CONTACTS ||--o{ SCHEDULES : for_contact
+    SCENARIOS ||--o{ SCHEDULES : triggers
+    PHONES ||--o{ CALLS : makes
+    CONTACTS ||--o{ CALLS : with
+    SCENARIOS ||--o{ CALLS : uses
+    CALLS ||--o{ MESSAGES : contains
