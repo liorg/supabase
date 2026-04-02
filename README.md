@@ -1,3 +1,7 @@
+
+<img width="6462" height="8192" alt="17751570977227796678731050878434" src="https://github.com/user-attachments/assets/ed9b5575-ecc4-463f-a3bc-d3bdc2d971ba" />
+
+
 | table_name                | column_name       | data_type                   |
 | ------------------------- | ----------------- | --------------------------- |
 | agent_events              | id                | uuid                        |
