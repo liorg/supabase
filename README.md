@@ -1,31 +1,23 @@
 <img width="3145" height="7540" alt="17751599908773097105719986255413" src="https://github.com/user-attachments/assets/6c0f9e82-29f0-47f5-a2d6-920af5dd6208" />
 
-אריכטטורה 
-React UI
-   │
-   │ POST /api/phone-setups
-   ▼
-FastAPI
-   │
-   │ create setup row
-   │ call agent start
-   ▼
-DB
 
-FastAPI -> Host Agent -> Container
+# Architecture: Agent Updates DB, FastAPI Pulls Status
 
-Container -> Host Agent -> DB
+## Overview
 
-React UI
-   │
-   │ GET /api/phone-setups/{id}
-   ▼
-FastAPI
-   │
-   │ SELECT from DB
-   ▼
-DB
+בארכיטקטורה זו:
 
+- **Agent** אחראי על runtime של הטלפון וה-containers
+- **Agent מעדכן את ה-DB ישירות**
+- **FastAPI משמש Orchestrator ו-API ל-UI**
+- **React UI פונה רק ל-FastAPI**
+- **FastAPI קורא את ה-DB כדי להחזיר סטטוס**
+
+אין צורך ב-queue או events bus.
+
+---
+
+# High Level Architecture
 
 
 
