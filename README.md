@@ -20,13 +20,7 @@
 # High Level Architecture
 
 
-
 erDiagram
-
-    USERS {
-        uuid id PK
-        uuid instance_id
-    }
 
     AGENT_HOSTS {
         uuid id PK
@@ -53,6 +47,7 @@ erDiagram
     PHONES {
         uuid id PK
         uuid user_id FK
+        uuid host_id FK
         text number
         text label
         text color
@@ -60,7 +55,6 @@ erDiagram
         text docker_url
         text docker_status
         timestamp created_at
-        uuid host_id FK
         varchar container_id
         varchar container_name
         int api_port
@@ -98,6 +92,8 @@ erDiagram
         text name
         text status
         jsonb config
+        interval estimated_duration_minutes
+        interval inter_leaf_response_time
         timestamp created_at
     }
 
@@ -135,39 +131,43 @@ erDiagram
         text status
         timestamp started_at
         timestamp ended_at
+        timestamp expected_end
         timestamp created_at
     }
 
     MESSAGES {
         uuid id PK
         uuid call_id FK
-        text topic
         text sender
-        text extension
+        text topic
         jsonb content
+        text extension
         text status
         jsonb payload
-        timestamp sent_at
         text event
+        timestamp sent_at
         boolean private
         timestamp updated_at
         timestamp inserted_at
     }
 
-    USERS ||--o{ PHONES : owns
-    AGENT_HOSTS ||--o{ PHONES : hosts
     AGENT_HOSTS ||--o{ AGENT_EVENTS : emits
+    AGENT_HOSTS ||--o{ PHONES : hosts
     AGENT_HOSTS ||--o{ PHONE_PROVISIONING_EVENTS : handles
-    PHONES ||--o{ PHONE_PROVISIONING_EVENTS : provisioning
+
     PHONES ||--o{ CONTACTS : has
-    PHONES ||--o{ SCENARIOS : contains
-    CONTACTS ||--o{ SCENARIOS : target
-    SCENARIOS ||--o{ SCENARIO_RUNS : runs
+    PHONES ||--o{ SCENARIOS : owns
     PHONES ||--o{ SCENARIO_RUNS : runs_on
     PHONES ||--o{ SCHEDULES : schedules
-    CONTACTS ||--o{ SCHEDULES : for_contact
-    SCENARIOS ||--o{ SCHEDULES : triggers
     PHONES ||--o{ CALLS : makes
+    PHONES ||--o{ PHONE_PROVISIONING_EVENTS : provisioning
+
+    CONTACTS ||--o{ SCENARIOS : target
+    CONTACTS ||--o{ SCHEDULES : for_contact
     CONTACTS ||--o{ CALLS : with
+
+    SCENARIOS ||--o{ SCENARIO_RUNS : runs
+    SCENARIOS ||--o{ SCHEDULES : triggers
     SCENARIOS ||--o{ CALLS : uses
+
     CALLS ||--o{ MESSAGES : contains
