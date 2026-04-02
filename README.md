@@ -12,7 +12,36 @@
 - **FastAPI קורא את ה-DB כדי להחזיר סטטוס**
 
 אין צורך ב-queue או events bus.
+## Phone Provisioning Flow
 
+```mermaid
+sequenceDiagram
+
+participant UI
+participant API
+participant DB
+participant Redis
+participant Worker
+participant Agent
+participant Phone
+
+UI->>API: Create phone setup
+API->>DB: Insert phone
+API->>DB: Insert provisioning event
+API->>Redis: Push setup event
+
+Worker->>Redis: Consume event
+Worker->>Agent: Request container start
+
+Agent->>Phone: Create container
+Agent->>DB: Update phone status
+Agent->>DB: Insert provisioning/agent events
+
+UI->>API: Poll setup status
+API->>DB: Read current status
+DB-->>API: Return latest phone/provisioning status
+API-->>UI: Return updated status
+```
 ---
 
 # High Level Architecture
