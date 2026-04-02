@@ -124,21 +124,21 @@ erDiagram
         timestamp_with_time_zone created_at
     }
 
-    users ||--|{ phones : "יחיד-לרבים"
-    phones ||--|{ contacts : "יחיד-לרבים"
-    phones ||--|{ scenarios : "יחיד-לרבים"
+    users ||..o{ phones : "יחיד-לרבים"
+    phones ||..o{ contacts : "יחיד-לרבים"
+    phones ||..o{ scenarios : "יחיד-לרבים"
 
-    scenarios ||--|{ calls : "יחיד-לרבים"
-    contacts ||--o{ calls : "רבים-לרבים"
-    phones ||--o{ calls : "רבים-לרבים"
+    scenarios ||..o{ calls : "יחיד-לרבים"
+    contacts }o..o{ calls : "רבים-לרבים"
+    phones }o..o{ calls : "רבים-לרבים"
 
-    calls ||--|{ messages : "יחיד-לרבים"
+    calls ||..o{ messages : "יחיד-לרבים"
 
-    phones ||--|{ schedules : "יחיד-לרבים"
-    contacts ||--o{ schedules : "רבים-לרבים" 
-    scenarios ||--o{ schedules : "רבים-לרבים"
+    phones ||..o{ schedules : "יחיד-לרבים"
+    contacts }o..o{ schedules : "רבים-לרבים" 
+    scenarios }o..o{ schedules : "רבים-לרבים"
 
-    hosts ||--|{ phones : "יחיד-לרבים"
+    hosts ||..o{ phones : "יחיד-לרבים"
 
-    phones ||--o{ container_events : "רבים-לרבים"
-    hosts ||--o{ container_events : "רבים-לרבים"
+    phones }o..o{ container_events : "רבים-לרבים"
+    hosts }o..o{ container_events : "רבים-לרבים"
