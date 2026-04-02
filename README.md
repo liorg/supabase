@@ -18,7 +18,7 @@
 ---
 
 # High Level Architecture
-
+```mermaid
 
 erDiagram
 
@@ -171,3 +171,5 @@ erDiagram
     SCENARIOS ||--o{ CALLS : uses
 
     CALLS ||--o{ MESSAGES : contains
+
+```mermaid
