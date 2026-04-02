@@ -19,10 +19,138 @@
 
 # High Level Architecture
 
-## Database ER Diagram
-
+## Database ERD
 ```mermaid
 erDiagram
+
+AGENT_HOSTS {
+    uuid id
+    varchar host_name
+    varchar ip_address
+    varchar external_ip
+    varchar status
+    timestamptz last_heartbeat
+    int max_containers
+    int port_range_start
+    int port_range_end
+    timestamptz created_at
+    timestamptz updated_at
+}
+
+AGENT_EVENTS {
+    uuid id
+    uuid agent_host_id
+    varchar event_type
+    jsonb event_data
+    timestamptz created_at
+}
+
+PHONES {
+    uuid id
+    uuid user_id
+    uuid host_id
+    text number
+    text label
+    text color
+    text status
+    text docker_url
+    text docker_status
+    timestamp created_at
+    varchar container_id
+    varchar container_name
+    int api_port
+    int ws_port
+    timestamptz last_health_check
+    text error_message
+}
+
+PHONE_PROVISIONING_EVENTS {
+    uuid id
+    uuid phone_id
+    uuid agent_host_id
+    varchar status
+    jsonb event_data
+    timestamptz created_at
+}
+
+CONTACTS {
+    uuid id
+    uuid phone_id
+    text lid
+    text number
+    text name
+    text email
+    text avatar
+    text tag
+    boolean is_bot
+    timestamp created_at
+}
+
+SCENARIOS {
+    uuid id
+    uuid phone_id
+    uuid contact_id
+    text name
+    text status
+    jsonb config
+    interval estimated_duration_minutes
+    interval inter_leaf_response_time
+    timestamp created_at
+}
+
+SCENARIO_RUNS {
+    uuid id
+    uuid scenario_id
+    uuid phone_id
+    text status
+    timestamp started_at
+    timestamp ended_at
+    timestamp created_at
+}
+
+SCHEDULES {
+    uuid id
+    uuid phone_id
+    uuid contact_id
+    uuid scenario_id
+    text schedule_name
+    text schedule_type
+    text status
+    timestamp run_at
+    text cron_expr
+    int interval_min
+    timestamp last_run
+    timestamp next_run
+    timestamp created_at
+}
+
+CALLS {
+    uuid id
+    uuid phone_id
+    uuid contact_id
+    uuid scenario_id
+    text status
+    timestamp started_at
+    timestamp ended_at
+    timestamp expected_end
+    timestamp created_at
+}
+
+MESSAGES {
+    uuid id
+    uuid call_id
+    text sender
+    text topic
+    jsonb content
+    text extension
+    text status
+    jsonb payload
+    text event
+    timestamp sent_at
+    boolean private
+    timestamp updated_at
+    timestamp inserted_at
+}
 
 AGENT_HOSTS ||--o{ AGENT_EVENTS : emits
 AGENT_HOSTS ||--o{ PHONES : hosts
