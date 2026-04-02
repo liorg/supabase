@@ -1,5 +1,3 @@
-<img width="3145" height="7540" alt="17751599908773097105719986255413" src="https://github.com/user-attachments/assets/6c0f9e82-29f0-47f5-a2d6-920af5dd6208" />
-
 
 # Architecture: Agent Updates DB, FastAPI Pulls Status
 
