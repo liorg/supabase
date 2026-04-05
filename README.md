@@ -1,4 +1,8 @@
 
+## Supabase
+npx supabase login
+npx supabase link --project-ref umxgluptdopldndqjbvx
+
 # Architecture: Agent Updates DB, FastAPI Pulls Status
 
 ## Overview
